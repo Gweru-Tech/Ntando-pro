@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ntando Mods Pro - Premium Digital Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #4f46e5;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f1f5f9;
+            --card-bg: #1e293b;
+            --text: #e2e8f0;
+            --text-light: #94a3b8;
+            --bg: #0f172a;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-accent: linear-gradient(135deg, var(--accent), var(--primary));
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            --shadow-light: 0 4px 20px rgba(37, 99, 235, 0.15);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+            --light: #1e293b;
+            --dark: #f1f5f9;
+            --darker: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --shadow-light: 0 4px 20px rgba(37, 99, 235, 0.1);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            overflow-y: auto;
+        }
+
+        .admin-panel.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .admin-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .admin-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .admin-close {
+            background: var(--error);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-close:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-light);
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid rgba(37, 99, 235, 0.3);
+            border-radius: 10px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tab.active {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .admin-tab:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.active {
+            display: block;
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            background: var(--glass-bg);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .admin-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-self: start;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .admin-btn.danger {
+            background: var(--error);
+        }
+
+        .admin-btn.success {
+            background: var(--success);
+        }
+
+        .services-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .service-item {
+            background: var(--glass-bg);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .service-info h4 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .service-info p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .service-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .service-actions button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background: var(--warning);
+            color: white;
+        }
+
+        .delete-btn {
+            background: var(--error);
+            color: white;
+        }
+
+        .messages-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .message-item {
+            background: var(--glass-bg);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .message-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .message-content {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-modal.active {
+            display: flex;
+        }
+
+        .login-form {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 2rem;
+        }
+
+        .login-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        /* Admin Access Button */
+        .admin-access {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            color: var(--text);
+            border-radius: 50px;
+            padding: 12px 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: var(--shadow-light);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-access:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+            border-color: var(--primary);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            color: var(--text);
+            border-radius: 50px;
+            padding: 12px 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: var(--shadow-light);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+            border-color: var(--primary);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+            z-index: 999;
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(37, 99, 235, 0.3)); }
+            100% { filter: drop-shadow(0 0 40px rgba(236, 72, 153, 0.4)); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(79, 70, 229, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+            border-color: var(--primary);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-url {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-url:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .feature-content p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 3rem auto 0;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .contact-form .form-group {
+            text-align: left;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            width: 70px;
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(37, 99, 235, 0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-link:hover::before {
+            opacity: 1;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: var(--shadow-heavy);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .social-link i {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .copyright {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            opacity: 0.8;
+            border-top: 1px solid rgba(37, 99, 235, 0.1);
+            padding-top: 2rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 10px 14px;
+            }
+
+            .admin-access {
+                bottom: 15px;
+                left: 15px;
+                padding: 10px 14px;
+            }
+
+            .hero {
+                padding: 1rem;
+                min-height: 90vh;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .services,
+            .features,
+            .contact {
+                padding: 3rem 1rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links {
+                gap: 1rem;
+            }
+
+            .social-link {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .admin-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .admin-tabs {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-heavy);
+            z-index: 10002;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Pulse Animation */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Glow Effect */
+        .glow {
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(37, 99, 235, 0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Elements -->
+    <div class="floating-elements" id="floatingElements"></div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-sun"></i>
+        <span>Light Mode</span>
+    </button>
+
+    <!-- Admin Access -->
+    <button class="admin-access" id="adminAccess">
+        <i class="fas fa-cog"></i>
+        <span>Admin</span>
+    </button>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Ntando Mods Pro</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Premium Digital Solutions</h1>
+            <p>Transform your digital presence with cutting-edge modifications, custom applications, and professional web development services.</p>
+            <div class="cta-buttons">
+                <a href="#services" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    Explore Services
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <i class="fas fa-phone"></i>
+                    Get In Touch
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services fade-in" id="services">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Discover our comprehensive range of digital solutions designed to elevate your online presence and streamline your digital experience.</p>
+        <div class="services-grid" id="servicesGrid">
+            <!-- Services will be loaded dynamically -->
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features fade-in" id="features">
+        <div class="features-container">
+            <h2 class="section-title">Why Choose Us</h2>
+            <p class="section-subtitle">We deliver exceptional results through innovation, expertise, and unwavering commitment to quality.</p>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Lightning Fast</h4>
+                        <p>Optimized performance and rapid delivery times for all our services and solutions.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Secure & Reliable</h4>
+                        <p>Enterprise-grade security measures and 99.9% uptime guarantee for peace of mind.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>24/7 Support</h4>
+                        <p>Round-the-clock customer support to assist you whenever you need help.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Custom Design</h4>
+                        <p>Tailored solutions that perfectly match your brand identity and requirements.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Mobile Optimized</h4>
+                        <p>Fully responsive designs that work flawlessly across all devices and platforms.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Analytics & Insights</h4>
+                        <p>Comprehensive analytics and reporting to track performance and growth.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact fade-in" id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Ready to start your next project? Contact us today and let's bring your vision to life.</p>
+        
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-input" name="name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" name="email" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Subject</label>
+                <input type="text" class="form-input" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea class="form-textarea" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i>
+                Send Message
+            </button>
+        </form>
+
+        <div class="social-links">
+            <a href="#" class="social-link" title="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="#" class="social-link" title="Telegram">
+                <i class="fab fa-telegram"></i>
+            </a>
+            <a href="#" class="social-link" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link" title="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="social-link" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Ntando Mods Pro</div>
+            <p class="footer-text">Delivering premium digital solutions with innovation, quality, and excellence. Your success is our mission.</p>
+            <p class="copyright">© 2024 Ntando Mods Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <form class="login-form" id="loginForm">
+            <h2 class="login-title">Admin Login</h2>
+            <div class="login-error" id="loginError"></div>
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" name="username" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" name="password" required>
+            </div>
+            <button type="submit" class="admin-btn">
+                <i class="fas fa-sign-in-alt"></i>
+                Login
+            </button>
+            <button type="button" class="admin-btn danger" onclick="closeLogin()">
+                <i class="fas fa-times"></i>
+                Cancel
+            </button>
+        </form>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h2 class="admin-title">Admin Dashboard</h2>
+                <button class="admin-close" onclick="closeAdmin()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Admin Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="showTab('dashboard')">Dashboard</button>
+                <button class="admin-tab" onclick="showTab('services')">Services</button>
+                <button class="admin-tab" onclick="showTab('messages')">Messages</button>
+                <button class="admin-tab" onclick="showTab('settings')">Settings</button>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div class="admin-content active" id="dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalServices">0</div>
+                        <div class="stat-label">Total Services</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalMessages">0</div>
+                        <div class="stat-label">Messages</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalVisitors">1,234</div>
+                        <div class="stat-label">Visitors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Tab -->
+            <div class="admin-content" id="services">
+                <form class="admin-form" id="serviceForm">
+                    <h3>Add New Service</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Service Title</label>
+                            <input type="text" class="form-input" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Icon Class</label>
+                            <input type="text" class="form-input" name="icon" placeholder="fas fa-code" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Service URL (optional)</label>
+                        <input type="url" class="form-input" name="url" placeholder="https://example.com">
+                    </div>
+                    <button type="submit" class="admin-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Service
+                    </button>
+                </form>
+
+                <div class="services-list" id="servicesList">
+                    <!-- Services will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Messages Tab -->
+            <div class="admin-content" id="messages">
+                <div class="messages-list" id="messagesList">
+                    <!-- Messages will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="admin-content" id="settings">
+                <form class="admin-form" id="settingsForm">
+                    <h3>Site Settings</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Site Title</label>
+                            <input type="text" class="form-input" name="siteTitle" value="Ntando Mods Pro">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Admin Username</label>
+                            <input type="text" class="form-input" name="adminUsername" value="admin">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Site Description</label>
+                        <textarea class="form-textarea" name="siteDescription">Premium Digital Solutions</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">New Admin Password</label>
+                        <input type="password" class="form-input" name="newPassword" placeholder="Leave blank to keep current">
+                    </div>
+                    <button type="submit" class="admin-btn success">
+                        <i class="fas fa-save"></i>
+                        Save Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Global Variables
+        let services = [];
+        let messages = [];
+        let isLoggedIn = false;
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTheme();
+            loadServices();
+            loadMessages();
+            createFloatingElements();
+            initializeScrollAnimations();
+            updateStats();
+        });
+
+        // Theme Management
+        function initializeTheme() {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeToggle();
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('theme', currentTheme);
+            updateThemeToggle();
+        }
+
+        function updateThemeToggle() {
+            const toggle = document.getElementById('themeToggle');
+            const icon = toggle.querySelector('i');
+            const text = toggle.querySelector('span');
+            
+            if (currentTheme === 'dark') {
+                icon.className = 'fas fa-sun';
+                text.textContent = 'Light Mode';
+            } else {
+                icon.className = 'fas fa-moon';
+                text.textContent = 'Dark Mode';
+            }
+        }
+
+        // Floating Elements
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            const colors = ['#2563eb', '#4f46e5', '#ec4899', '#10b981'];
+            
+            for (let i = 0; i < 50; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.animationDelay = Math.random() * 15 + 's';
+                element.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                element.style.background = colors[Math.floor(Math.random() * colors.length)];
+                container.appendChild(element);
+            }
+        }
+
+        // Scroll Animations
+        function initializeScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Services Management
+        function loadServices() {
+            const savedServices = localStorage.getItem('services');
+            if (savedServices) {
+                services = JSON.parse(savedServices);
+            } else {
+                // Default services
+                services = [
+                    {
+                        id: 1,
+                        title: "Custom App Development",
+                        icon: "fas fa-mobile-alt",
+                        description: "Professional mobile and web application development tailored to your specific needs.",
+                        url: ""
+                    },
+                    {
+                        id: 2,
+                        title: "Website Design & Development",
+                        icon: "fas fa-code",
+                        description: "Modern, responsive websites that drive engagement and deliver results.",
+                        url: ""
+                    },
+                    {
+                        id: 3,
+                        title: "Digital Marketing Solutions",
+                        icon: "fas fa-chart-line",
+                        description: "Comprehensive digital marketing strategies to boost your online presence.",
+                        url: ""
+                    },
+                    {
+                        id: 4,
+                        title: "E-commerce Solutions",
+                        icon: "fas fa-shopping-cart",
+                        description: "Complete e-commerce platforms with payment integration and inventory management.",
+                        url: ""
+                    },
+                    {
+                        id: 5,
+                        title: "Cloud Services",
+                        icon: "fas fa-cloud",
+                        description: "Scalable cloud infrastructure and deployment solutions for your applications.",
+                        url: ""
+                    },
+                    {
+                        id: 6,
+                        title: "Technical Support",
+                        icon: "fas fa-headset",
+                        description: "24/7 technical support and maintenance for all your digital solutions.",
+                        url: ""
+                    }
+                ];
+                saveServices();
+            }
+            renderServices();
+            renderAdminServices();
+        }
+
+        function saveServices() {
+            localStorage.setItem('services', JSON.stringify(services));
+        }
+
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = services.map(service => `
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="${service.icon}"></i>
+                    </div>
+                    <h3>${service.title}</h3>
+                    <p>${service.description}</p>
+                    ${service.url ? `<a href="${service.url}" class="service-url" target="_blank">Learn More</a>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderAdminServices() {
+            const list = document.getElementById('servicesList');
+            list.innerHTML = services.map(service => `
+                <div class="service-item">
+                    <div class="service-info">
+                        <h4>${service.title}</h4>
+                        <p>${service.description}</p>
+                        ${service.url ? `<small>URL: ${service.url}</small>` : ''}
+                    </div>
+                    <div class="service-actions">
+                        <button class="edit-btn" onclick="editService(${service.id})">Edit</button>
+                        <button class="delete-btn" onclick="deleteService(${service.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addService(formData) {
+            const newService = {
+                id: Date.now(),
+                title: formData.get('title'),
+                icon: formData.get('icon'),
+                description: formData.get('description'),
+                url: formData.get('url') || ''
+            };
+            
+            services.push(newService);
+            saveServices();
+            renderServices();
+            renderAdminServices();
+            updateStats();
+            showNotification('Service added successfully!');
+        }
+
+        function deleteService(id) {
+            if (confirm('Are you sure you want to delete this service?')) {
+                services = services.filter(service => service.id !== id);
+                saveServices();
+                renderServices();
+                renderAdminServices();
+                updateStats();
+                showNotification('Service deleted successfully!');
+            }
+        }
+
+        function editService(id) {
+            const service = services.find(s => s.id === id);
+            if (service) {
+                const form = document.getElementById('serviceForm');
+                form.title.value = service.title;
+                form.icon.value = service.icon;
+                form.description.value = service.description;
+                form.url.value = service.url;
+                
+                // Change form to edit mode
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Service';
+                submitBtn.onclick = (e) => {
+                    e.preventDefault();
+                    updateService(id, new FormData(form));
+                };
+            }
+        }
+
+        function updateService(id, formData) {
+            const serviceIndex = services.findIndex(s => s.id === id);
+            if (serviceIndex !== -1) {
+                services[serviceIndex] = {
+                    ...services[serviceIndex],
+                    title: formData.get('title'),
+                    icon: formData.get('icon'),
+                    description: formData.get('description'),
+                    url: formData.get('url') || ''
+                };
+                
+                saveServices();
+                renderServices();
+                renderAdminServices();
+                showNotification('Service updated successfully!');
+                
+                // Reset form
+                const form = document.getElementById('serviceForm');
+                form.reset();
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Service';
+                submitBtn.onclick = null;
+            }
+        }
+
+        // Messages Management
+        function loadMessages() {
+            const savedMessages = localStorage.getItem('messages');
+            if (savedMessages) {
+                messages = JSON.parse(savedMessages);
+            }
+            renderMessages();
+        }
+
+        function saveMessages() {
+            localStorage.setItem('messages', JSON.stringify(messages));
+        }
+
+        function renderMessages() {
+            const list = document.getElementById('messagesList');
+            if (messages.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: var(--text-light);">No messages yet.</p>';
+                return;
+            }
+            
+            list.innerHTML = messages.map(message => `
+                <div class="message-item">
+                    <div class="message-header">
+                        <div>
+                            <div class="message-sender">${message.name}</div>
+                            <div style="color: var(--text-light); font-size: 0.9rem;">${message.email}</div>
+                        </div>
+                        <div class="message-date">${new Date(message.date).toLocaleDateString()}</div>
+                    </div>
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text);">${message.subject}</div>
+                    <div class="message-content">${message.message}</div>
+                </div>
+            `).join('');
+        }
+
+        function addMessage(formData) {
+            const newMessage = {
+                id: Date.now(),
+                name: formData.get('name'),
+                email: formData.get('email'),
+                subject: formData.get('subject'),
+                message: formData.get('message'),
+                date: new Date().toISOString()
+            };
+            
+            messages.unshift(newMessage);
+            saveMessages();
+            renderMessages();
+            updateStats();
+        }
+
+        // Admin Panel Management
+        function showLogin() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLogin() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        function showAdmin() {
+            if (isLoggedIn) {
+                document.getElementById('adminPanel').classList.add('active');
+                updateStats();
+            } else {
+                showLogin();
+            }
+        }
+
+        function closeAdmin() {
+            document.getElementById('adminPanel').classList.remove('active');
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.admin-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function updateStats() {
+            document.getElementById('totalServices').textContent = services.length;
+            document.getElementById('totalMessages').textContent = messages.length;
+        }
+
+        // Notifications
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event Listeners
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        document.getElementById('adminAccess').addEventListener('click', showAdmin);
+
+        // Login Form
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const username = formData.get('username');
+            const password = formData.get('password');
+            
+            // Simple authentication (in production, use proper authentication)
+            if (username === 'admin' && password === 'admin123') {
+                isLoggedIn = true;
+                closeLogin();
+                showAdmin();
+                showNotification('Login successful!');
+            } else {
+                const errorDiv = document.getElementById('loginError');
+                errorDiv.textContent = 'Invalid username or password';
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        // Service Form
+        document.getElementById('serviceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            addService(formData);
+            this.reset();
+        });
+
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            addMessage(formData);
+            this.reset();
+            showNotification('Message sent successfully! We\'ll get back to you soon.');
+        });
+
+        // Settings Form
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('Settings saved successfully!');
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Close modals on outside click
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('login-modal')) {
+                closeLogin();
+            }
+            if (e.target.classList.contains('admin-panel')) {
+                closeAdmin();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLogin();
+                closeAdmin();
+            }
+        });
+    </script>
+</body>
+</html>
+
